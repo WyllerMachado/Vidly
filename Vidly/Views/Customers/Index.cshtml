@@ -1,7 +1,4 @@
-﻿@using System.Web.UI.WebControls
-@using Vidly.Controllers
-@using Vidly.ViewModels
-@model Vidly.ViewModels.CustomersViewModel
+﻿@model IEnumerable<Vidly.Models.Customer>
 
 @{
     ViewBag.Title = "Clientes";
@@ -10,7 +7,7 @@
 
 <h2>Clientes</h2>
 
-@if (Model.Customers.Count == 0)
+@if (!Model.Any())
     {
         <p class="text-warning">Não existe nenhum cliente cadastrado ainda.</p>
     }
@@ -32,7 +29,7 @@ else
             </thead>
         
             <tbody>
-            @foreach (var customer in Model.Customers)
+            @foreach (var customer in Model)
             {
                 <tr>
                     <td>@Html.ActionLink(@customer.Name, "Details", "Customers", new { id = @customer.Id }, null)</td>

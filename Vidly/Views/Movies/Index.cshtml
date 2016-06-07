@@ -1,6 +1,4 @@
-﻿
-@using Vidly.Models
-@model Vidly.ViewModels.MoviesViewModel
+﻿@model IEnumerable<Vidly.Models.Movie>
 
 @{
     ViewBag.Title = "Filmes";
@@ -9,7 +7,7 @@
 
 <h2>Filmes</h2>
 
-@if (@Model.Movies.Count == 0)
+@if (!Model.Any())
 {
     <p class="text-warning">Não existe nenhum filme cadastrado ainda</p>
 }
@@ -23,7 +21,7 @@ else
         </thead>
 
         <tbody>
-        @foreach (var movie in @Model.Movies)
+        @foreach (var movie in Model)
         {
             <tr>
                 <td>@movie.Name</td>
