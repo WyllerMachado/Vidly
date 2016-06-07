@@ -1,0 +1,43 @@
+﻿@using System.Web.UI.WebControls
+@using Vidly.Controllers
+@using Vidly.ViewModels
+@model Vidly.ViewModels.CustomersViewModel
+
+@{
+    ViewBag.Title = "Clientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Clientes</h2>
+
+@if (Model.Customers.Count == 0)
+    {
+        <p class="text-warning">Não existe nenhum cliente cadastrado ainda.</p>
+    }
+else
+    {
+        @*
+        Cabeçalho da tabela: <thead>
+        Linha da tabela: <tr>
+        Item do cabeçalho: <th>
+        Corpo da tabela: <tbody>
+        Célula da tabela: <td>
+        *@
+
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th>Cliente</th>
+            </tr>
+            </thead>
+        
+            <tbody>
+            @foreach (var customer in Model.Customers)
+            {
+                <tr>
+                    <td>@Html.ActionLink(@customer.Name, "Details", "Customers", new { id = @customer.Id }, null)</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
