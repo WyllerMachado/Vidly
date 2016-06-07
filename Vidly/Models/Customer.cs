@@ -7,8 +7,10 @@ namespace Vidly.Models
 {
     public class Customer
     {
-        public int Id { get; set; }
+        public int Id { get; set; }  // Primary key
         public string Name { get; set; }
-
+        public bool IsSubscribedToNewsletter { get; set; }
+        public MembershipType MembershipType { get; set; }  // Navigation Property
+        public byte MembershipTypeId { get; set; }  // Foreign Key
     }
 }
