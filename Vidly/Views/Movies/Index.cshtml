@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Vidly.Models.Movie>
+﻿@using System.Web.UI.WebControls
+@using Vidly.Controllers
+@model IEnumerable<Vidly.Models.Movie>
 
 @{
     ViewBag.Title = "Filmes";
@@ -17,6 +19,7 @@ else
         <thead>
         <tr>
             <th>Filme</th>
+            <th>Gênero</th>
         </tr>
         </thead>
 
@@ -24,7 +27,8 @@ else
         @foreach (var movie in Model)
         {
             <tr>
-                <td>@movie.Name</td>
+                <td>@Html.ActionLink(@movie.Name, "Details", "Movies", new { id = @movie.Id}, null)</td>
+                <td>@movie.Genre.Name</td>
             </tr>
         }
         </tbody>
