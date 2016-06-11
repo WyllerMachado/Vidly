@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web.Mvc;
 using Vidly.Models;
@@ -20,6 +21,7 @@ namespace Vidly.Controllers
             _context.Dispose();
         }
 
+
         // GET: Customers
         public ViewResult Index()
         {
@@ -29,28 +31,33 @@ namespace Vidly.Controllers
         }
 
 
+        // GET: Customers/New
         public ActionResult New()
         {
-            var membershipTypes = _context.MembershipTypes.ToList();
-
             var viewModel = new NewCustomerViewModel
             {
-                MembershipTypes = membershipTypes
+                Customer = new Customer(),
+                MembershipTypes = _context.MembershipTypes.ToList()
             };
 
-            return View(viewModel);
+            return View("CustomerForm", viewModel);
         }
 
-        [HttpPost]
-        public ActionResult Create(Customer customer)
+
+        // GET: Customers/Edit/{id}
+        public ActionResult Edit(int id)
         {
-            _context.Customers.Add(customer);
-            _context.SaveChanges();
+            var viewModel = new NewCustomerViewModel
+            {
+                Customer = _context.Customers.SingleOrDefault(c => c.Id == id),
+                MembershipTypes = _context.MembershipTypes.ToList()
+            };
 
-            return RedirectToAction("Index", "Customers");
+            return View("CustomerForm", viewModel);
         }
 
-        
+
+        // GET: Customers/Details/{id}
         public ActionResult Details(int id)
         {
             var customer = _context.Customers.Include(c => c.MembershipType).SingleOrDefault(c => c.Id == id);
@@ -60,6 +67,27 @@ namespace Vidly.Controllers
 
 
             return View(customer);
+        }
+
+
+        [HttpPost]
+        public ActionResult Save(Customer customer)
+        {
+            if (customer.Id == 0)
+                _context.Customers.Add(customer);
+            else
+            {
+                var customerInDb = _context.Customers.Single(c => c.Id == customer.Id);
+
+                customerInDb.Name = customer.Name;
+                customerInDb.Birthdate = customer.Birthdate;
+                customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
+                customerInDb.MembershipTypeId = customer.MembershipTypeId;
+            }
+
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Customers");
         }
     }
 }

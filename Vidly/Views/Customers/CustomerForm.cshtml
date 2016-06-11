@@ -1,13 +1,15 @@
 ﻿@model Vidly.ViewModels.NewCustomerViewModel
 
 @{
-    ViewBag.Title = "Novo Cliente";
+    var viewName = Model.Customer.Name.IsEmpty() ? "Novo Cliente" : "Editar Cliente";
+
+    ViewBag.Title = viewName;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Novo Cliente</h2>
+<h2>@viewName</h2>
 
-@using (Html.BeginForm("Create", "Customers"))
+@using (Html.BeginForm("Save", "Customers"))
 {
     <div class="form-group">
         @Html.LabelFor(m => m.Customer.Name)
@@ -17,7 +19,7 @@
 
     <div class="form-group">
         @Html.LabelFor(m => m.Customer.Birthdate)
-        @Html.TextBoxFor(m => m.Customer.Birthdate, new {@class = "form-control"})
+        @Html.TextBoxFor(m => m.Customer.Birthdate,"{0:d/MM/yyyy}", new {@class = "form-control"})
     </div>
 
 
@@ -33,5 +35,7 @@
         </label>
     </div>
 
+
+    @Html.HiddenFor(m => m.Customer.Id)
     <button type="submit" class="btn btn-primary">Salvar</button>
 }
