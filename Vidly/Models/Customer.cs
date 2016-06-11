@@ -12,11 +12,22 @@ namespace Vidly.Models
 
         [Required]  // Not null
         [StringLength(255)]
+        [Display(Name = "Nome")]
         public string Name { get; set; }
 
+
+        [Display(Name = "Data de Nascimento")]
         public DateTime? Birthdate { get; set; }
+
+
+        [Display(Name = "Receber emails promocionais?")]
         public bool IsSubscribedToNewsletter { get; set; }
+
+
         public MembershipType MembershipType { get; set; }  // Navigation Property
+
+
+        [Display(Name = "Plano")]
         public byte MembershipTypeId { get; set; }  // Foreign Key
     }
 }
