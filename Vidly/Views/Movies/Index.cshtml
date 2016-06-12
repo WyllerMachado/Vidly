@@ -9,6 +9,10 @@
 
 <h2>Filmes</h2>
 
+<p>
+    @Html.ActionLink("Novo Filme", "New", "Movies", null, new { @class = "btn btn-primary" })
+</p>
+
 @if (!Model.Any())
 {
     <p class="text-warning">Não existe nenhum filme cadastrado ainda</p>

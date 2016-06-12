@@ -7,6 +7,10 @@
 
 <h2>Clientes</h2>
 
+<p>
+    @Html.ActionLink("Novo Cliente", "New", "Customers", null, new { @class = "btn btn-primary" })
+</p>
+
 @if (!Model.Any())
     {
         <p class="text-warning">Não existe nenhum cliente cadastrado ainda.</p>

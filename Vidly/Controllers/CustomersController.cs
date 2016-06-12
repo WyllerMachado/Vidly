@@ -34,7 +34,7 @@ namespace Vidly.Controllers
         // GET: Customers/New
         public ActionResult New()
         {
-            var viewModel = new NewCustomerViewModel
+            var viewModel = new CustomerFormViewModel
             {
                 Customer = new Customer(),
                 MembershipTypes = _context.MembershipTypes.ToList()
@@ -47,7 +47,7 @@ namespace Vidly.Controllers
         // GET: Customers/Edit/{id}
         public ActionResult Edit(int id)
         {
-            var viewModel = new NewCustomerViewModel
+            var viewModel = new CustomerFormViewModel
             {
                 Customer = _context.Customers.SingleOrDefault(c => c.Id == id),
                 MembershipTypes = _context.MembershipTypes.ToList()
