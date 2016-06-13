@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Microsoft.Ajax.Utilities;
 using Vidly.Models;
 using Vidly.ViewModels;
 
@@ -43,7 +41,26 @@ namespace Vidly.Controllers
                 Genres = _context.Genres.ToList()
             };
 
-            return View("MoviesForm", viewModel);
+            return View("MovieForm", viewModel);
+        }
+
+
+        // GET: Movies/Edit/{id}
+        public ActionResult Edit(int id)
+        {
+            var movie = _context.Movies.SingleOrDefault(m => m.Id == id);
+
+            if (movie == null)
+                return HttpNotFound();
+
+
+            var viewModel = new MovieFormViewModel
+            {
+                Movie = movie,
+                Genres = _context.Genres.ToList()
+            };
+
+            return View("MovieForm", viewModel);
         }
 
 

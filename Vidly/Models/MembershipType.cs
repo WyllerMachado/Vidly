@@ -18,5 +18,10 @@ namespace Vidly.Models
         public byte DiscountRate { get; set; }
 
 
+        public static readonly byte Desconhecido = 0;
+        public static readonly byte PagueComoUsar = 1;
+        public static readonly byte Mensal = 2;
+        public static readonly byte Trimestral = 3;
+        public static readonly byte Anual = 4;
     }
 }
