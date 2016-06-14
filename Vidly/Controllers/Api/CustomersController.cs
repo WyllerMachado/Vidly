@@ -81,12 +81,12 @@ namespace Vidly.Controllers.Api
         [HttpDelete]
         public IHttpActionResult DeleteCustomer(int id)
         {
-            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
+            var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
 
-            if (customer == null)
+            if (customerInDb == null)
                 return NotFound();
 
-            _context.Customers.Remove(customer);
+            _context.Customers.Remove(customerInDb);
             _context.SaveChanges();
 
             return Ok();
