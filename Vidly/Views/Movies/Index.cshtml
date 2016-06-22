@@ -1,8 +1,4 @@
-﻿@using System.Web.UI.WebControls
-@using Vidly.Controllers
-@model IEnumerable<Vidly.Models.Movie>
-
-@{
+﻿@{
     ViewBag.Title = "Filmes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -13,28 +9,68 @@
     @Html.ActionLink("Novo Filme", "New", "Movies", null, new { @class = "btn btn-primary" })
 </p>
 
-@if (!Model.Any())
-{
-    <p class="text-warning">Não existe nenhum filme cadastrado ainda</p>
-}
-else
-{
-    <table class="table table-bordered table-hover">
-        <thead>
-        <tr>
-            <th>Filme</th>
-            <th>Gênero</th>
-        </tr>
-        </thead>
 
-        <tbody>
-        @foreach (var movie in Model)
-        {
-            <tr>
-                <td>@Html.ActionLink(@movie.Name, "Edit", "Movies", new { id = @movie.Id}, null)</td>
-                <td>@movie.Genre.Name</td>
-            </tr>
-        }
-        </tbody>
-    </table>
+<table id="movies" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>Filme</th>
+        <th>Gênero</th>
+        <th>Remover</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script>
+
+        $(document).ready(function() {
+
+            var table = $("#movies").DataTable({
+                ajax: {
+                    url: "/api/movies",
+                    dataSrc: ""
+                },
+                columns: [
+                    {
+                        data: "name",
+                        render: function (data, type, movie) {
+                            // <a href='/movies/edit/1'> Toy Story </a>
+                            return "<a href='/movies/edit/" + movie.id + "'>" + movie.name + "</a>";
+                        }
+                    },
+                    {
+                        data: "genre.name"
+                    },
+                    {
+                        data: "id",
+                        render: function (data) {
+                            // <button class="btn-link js-delete" data-movie-id=1"> Remover </button>
+                            return "<button class='btn-link js-delete' data-movie-id=" + data + ">Remover</button>";
+                        }
+                    }
+                ]
+            });
+
+            $("#movies").on("click", ".js-delete", function () {
+                var button = $(this);
+
+                bootbox.confirm("Tem certeza que deseja remover este filme?", function (result) {
+                    if (result) {
+                        $.ajax({
+                            url: "/api/movies/" + button.attr("data-movie-id"),
+                            method: "DELETE",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            }
+                        });
+                    }
+                });
+            });
+
+        });
+
+    </script>
 }
