@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
+using Microsoft.Ajax.Utilities;
 using Vidly.Dtos;
 using Vidly.Models;
 
@@ -22,12 +23,18 @@ namespace Vidly.Controllers.Api
 
 
         // GET /api/movies
-        public IHttpActionResult GetMovies()
+        public IHttpActionResult GetMovies(string query = null)
         {
-            return Ok(_context.Movies
-                .Include(c => c.Genre)
-                .ToList()
-                .Select(Mapper.Map<Movie, MovieDto>));
+            var moviesQuery = _context.Movies.Include(m => m.Genre);
+
+            if (!string.IsNullOrWhiteSpace(query))
+                moviesQuery = _context.Movies
+                    .Where(m => m.Name.Contains(query) && m.NumberAvailable > 0);
+
+            var movieDtos = moviesQuery.ToList()
+                .Select(Mapper.Map<Movie, MovieDto>);
+
+            return Ok(movieDtos);
         }
 
 
